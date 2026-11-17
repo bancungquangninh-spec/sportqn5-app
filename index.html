@@ -50,6 +50,7 @@
     if (!/^https:\/\/([a-z0-9-]+\.)*(googleusercontent\.com|script\.google\.com)$/.test(String(ev.origin || ''))) return; // chỉ nhận lệnh từ chính ứng dụng
     var giai = /^[A-Za-z0-9_-]{1,40}$/.test(String(d.giai || '')) && d.giai !== 'g1' ? String(d.giai) : '', mode = d.sqnGo === 'trongtai' ? 'trongtai' : d.sqnGo === 'xem' ? 'xem' : ''; if (!mode) return;
     try { if (mode === 'trongtai') sessionStorage.setItem('sqnMode', 'trongtai'); else sessionStorage.removeItem('sqnMode'); if (giai) sessionStorage.setItem('sqnGiai', giai); else sessionStorage.removeItem('sqnGiai'); } catch (e) {}
+    try { if (ev.source) ev.source.postMessage({ sqnAck: 1 }, '*'); } catch (e) {}
     var q = qOf(mode, giai); try { history.pushState({ sqnQ: q }, ''); } catch (e) {} open(q);
   });
   var asApp = window.matchMedia('(display-mode: fullscreen)').matches || window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
